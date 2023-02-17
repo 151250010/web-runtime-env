@@ -1,0 +1,32 @@
+version: "1"
+services:
+  mysql:
+    container_name: mysql
+    hostname: mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: demo
+      MYSQL_DATABASE: demo
+    ports:
+      - "3306:3306"
+    command: [
+      --character-set-server=utf8mb4,
+      --collation-server=utf8mb4_unicode_ci
+    ]
+
+  # 单机nacos server 这个镜像用的内存数据库 不需要再启动mysql 默认用的内存数据库
+  # 也可以切换到mysql要把https://github.com/nacos-group/nacos-docker/blob/master/example/standalone-mysql-5.7.yaml
+  #  sql文件执行下
+  nacos:
+    container_name: nacos
+    hostname: nacos
+    image: nacos/nacos-server:latest
+    environment:
+      MODE: standalone
+      PREFER_HOST_MODE: hostname
+    ports:
+      # 下面两个端口必须开放
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+
